@@ -10,12 +10,12 @@ set_colors$rgb <- paste("#", set_colors$rgb, sep="")
 dim(set_colors)
 
 # color frequency plots
-freq_tbl <- set_colors %>% select(Theme, rgb) %>% 
+table <- set_colors %>% select(Theme, rgb) %>% 
   group_by(Theme, rgb) %>%
   summarise(n = n())  %>%
   mutate(percent = n/sum(n))
 #freq_tbl$rgb <- paste("#", freq_tbl$rgb, sep="")
-freq_tbl <- freq_tbl[1:1000,]
+freq_tbl <- table[1:1000,]
 
 # plot
 breaks <- freq_tbl$Theme
@@ -25,7 +25,7 @@ names(pal) <- unique(pal)
 gp <-  freq_tbl %>% ggplot() + 
   geom_col(
     aes(x = Theme, y = percent, fill = rgb),  
-    width = 10
+    width = 1
   ) +
   labs(x = "", 
        y = "Relative Color Frequency", 
@@ -48,4 +48,6 @@ gp <-  freq_tbl %>% ggplot() +
     panel.grid = element_blank()
   )
 gp <- gp + scale_x_discrete(labels = abbreviate)
+gp <- gp + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 gp
+#text = element_text(size=5),
